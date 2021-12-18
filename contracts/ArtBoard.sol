@@ -11,7 +11,7 @@ contract Artboard is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     address contractAddress;
 
-    constructor(address marketplaceAddress) ERC721("Artboard", "ART") {
+    constructor(address marketplaceAddress) ERC721("Artboard Token", "ART") {
         contractAddress = marketplaceAddress;
     }
 
