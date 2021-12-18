@@ -5,13 +5,14 @@ pragma solidity ^0.8.3;
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
+import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 import "hardhat/console.sol";
 
 contract NFTMarket is ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds;
     Counters.Counter private _itemsSold;
+    using EnumerableMap for EnumerableMap.UintToAddressMap;
 
     address payable owner;
     uint256 listingPrice = 0.025 ether;
@@ -31,6 +32,7 @@ contract NFTMarket is ReentrancyGuard {
     }
 
     mapping(uint256 => MarketItem) private idToMarketItem;
+    EnumerableMap.UintToAddressMap private marketItems;
 
     event MarketItemCreated(
         uint256 indexed itemId,
@@ -72,6 +74,8 @@ contract NFTMarket is ReentrancyGuard {
             false
         );
 
+        marketItems.set(itemId, nftContract);
+
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
         emit MarketItemCreated(
@@ -103,6 +107,7 @@ contract NFTMarket is ReentrancyGuard {
         IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
         idToMarketItem[itemId].sold = true;
+        marketItems.set(itemId, nftContract);
         _itemsSold.increment();
         payable(owner).transfer(listingPrice);
     }
