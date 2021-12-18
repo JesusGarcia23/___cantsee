@@ -13,7 +13,9 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.24.0",
     "body-scroll-lock": "^3.1.5",
+    "chai": "^4.3.4",
     "classnames": "^2.3.1",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
@@ -36,7 +38,7 @@
   },
   "scripts": {
     "requirements-check": "node check_node_version.js",
-    "start" : "react-app-rewired start",
+    "start": "react-app-rewired start",
     "local:deploy": "sh ./build.local.sh",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -9,7 +9,14 @@ import Loader from "../../components/Loader";
 import Modal from "../../components/Modal";
 import Preview from "./Preview";
 import Cards from "./Cards";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import Web3Modal from "web3modal";
+import { artboardAddress, nftmarketaddress } from "../../../config";
+import ArtBoard from "../../../artifacts/contracts/ArtBoard.sol/Artboard.json";
+import { ethers } from "ethers";
+
 import FolowSteps from "./FolowSteps";
+const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -34,14 +41,60 @@ const items = [
 
 const Upload = () => {
   const [royalties, setRoyalties] = useState(royaltiesOptions[0]);
+
   const [sale, setSale] = useState(true);
   const [price, setPrice] = useState(false);
   const [locking, setLocking] = useState(false);
 
   const [visibleModal, setVisibleModal] = useState(false);
-
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [size, setSize] = useState(0);
+  const [property, setProperties] = useState(0);
+  const [fileUrl, setFileUrl] = useState(null);
   const [visiblePreview, setVisiblePreview] = useState(false);
 
+  async function setImage(event) {
+    try {
+      const file = event.target.files[0];
+      const upload = await client.add(file, {
+        progress: (prog) => console.log(`received: ${prog}`),
+      });
+
+      setSize(upload.size);
+      const url = `https://ipfs.infura.io/ipfs/${upload.path}`;
+      setFileUrl(url);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async function createItem() {
+    if (!name || !description || !fileUrl) {
+      throw new Error("Please fill all fields");
+    }
+    const data = JSON.stringify({
+      name,
+      description,
+      image: fileUrl,
+    });
+    const added = await client.add(data);
+    console.log(added);
+    const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+    await mintToken(url);
+  }
+  async function mintToken(url) {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    let contract = new ethers.Contract(artboardAddress, ArtBoard.abi, signer);
+
+    let transaction = await contract.createToken(url);
+    let tx = await transaction.wait();
+    let event = tx.events[0];
+    let value = event.args[2];
+    let tokenId = value.toNumber();
+  }
   return (
     <>
       <div className={cn("section", styles.section)}>
@@ -65,7 +118,11 @@ const Upload = () => {
                     Drag or choose your file to upload
                   </div>
                   <div className={styles.file}>
-                    <input className={styles.load} type="file" />
+                    <input
+                      className={styles.load}
+                      type="file"
+                      onChange={setImage}
+                    />
                     <div className={styles.icon}>
                       <Icon name="upload-file" size="24" />
                     </div>
@@ -80,15 +137,17 @@ const Upload = () => {
                     <TextInput
                       className={styles.field}
                       label="Item name"
-                      name="Item"
                       type="text"
+                      setValue={setName}
+                      name={name}
                       placeholder='e. g. Redeemable Bitcoin Card with logo"'
                       required
                     />
                     <TextInput
                       className={styles.field}
                       label="Description"
-                      name="Description"
+                      setValue={setDescription}
+                      name={description}
                       type="text"
                       placeholder="e. g. “After purchasing you will able to recived the logo...”"
                       required
@@ -107,9 +166,10 @@ const Upload = () => {
                       </div>
                       <div className={styles.col}>
                         <TextInput
-                          className={styles.field}
+                          className={styles.fxield}
                           label="Size"
-                          name="Size"
+                          name={size}
+                          setValue={setSize}
                           type="text"
                           placeholder="e. g. Size"
                           required
@@ -119,7 +179,8 @@ const Upload = () => {
                         <TextInput
                           className={styles.field}
                           label="Propertie"
-                          name="Propertie"
+                          name={property}
+                          setValue={setProperties}
                           type="text"
                           placeholder="e. g. Propertie"
                           required
@@ -173,8 +234,7 @@ const Upload = () => {
                 </button>
                 <button
                   className={cn("button", styles.button)}
-                  onClick={() => setVisibleModal(true)}
-                  // type="button" hide after form customization
+                  onClick={createItem}
                   type="button"
                 >
                   <span>Create item</span>

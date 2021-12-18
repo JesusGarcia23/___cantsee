@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/app.sass";
+import axios from "axios";
 import Page from "./components/Page";
 import Home from "./screens/Home";
 import UploadVariants from "./screens/UploadVariants";
@@ -18,11 +19,13 @@ import { artboardAddress, nftmarketaddress } from "../config";
 import ArtBoard from "../artifacts/contracts/ArtBoard.sol/Artboard.json";
 import MarketPlace from "../artifacts/contracts/MarketPlace.sol/MarketPlace.json";
 import { ethers } from "ethers";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 
 function App() {
   useEffect(() => {
     LoadAssets();
   }, []);
+  const [art, setArt] = useState([]);
   async function LoadAssets() {
     const provider = new ethers.providers.JsonRpcProvider();
     const tokenContract = new ethers.Contract(
@@ -35,7 +38,22 @@ function App() {
       MarketPlace.abi,
       provider
     );
-    console.log(marketContract);
+    const data = await marketContract.fetchItemsCreated();
+    const items = await Promise.all(
+      data.map(async (i) => {
+        const tokenUri = await axios.get(i.tokenId);
+        let item = {
+          price: i.price.toString(),
+          tokenId: i.tokenId.toString(),
+          seller: i.seller,
+          owner: i.owner,
+          tokenUri,
+        };
+        return item;
+      })
+    );
+    console.log(items, "the items");
+    setArt(items);
   }
   return (
     <Router>
