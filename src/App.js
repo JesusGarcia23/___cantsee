@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/app.sass";
 import Page from "./components/Page";
@@ -13,8 +14,19 @@ import Profile from "./screens/Profile";
 import ProfileEdit from "./screens/ProfileEdit";
 import Item from "./screens/Item";
 import PageList from "./screens/PageList";
+import { artboard, nftmarketaddress } from "../config";
+import ArtBoard from "../artifacts/contracts/ArtBoard.sol/Artboard.json";
+import MarketPlace from "../artifacts/contracts/MarketPlace.sol/MarketPlace.json";
+import { ethers } from "ethers";
 
 function App() {
+  useEffect(() => {
+    LoadAssets();
+  }, []);
+  async function LoadAssets() {
+    const provider = new ethers.providers.JsonRpcProvider();
+    console.log(provider);
+  }
   return (
     <Router>
       <Switch>
