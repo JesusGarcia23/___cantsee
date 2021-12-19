@@ -12,7 +12,8 @@ import Cards from "./Cards";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import Web3Modal from "web3modal";
 import { artboardAddress, nftmarketaddress } from "../../../config";
-import ArtBoard from "../../../artifacts/contracts/ArtBoard.sol/Artboard.json";
+import ArtBoard from "../../../artifacts/contracts/Artboard.sol/Artboard.json";
+import MarketPlace from "../../../artifacts/contracts/MarketPlace.sol/MarketPlace.json";
 import { ethers } from "ethers";
 
 import FolowSteps from "./FolowSteps";
@@ -83,17 +84,33 @@ const Upload = () => {
     await mintToken(url);
   }
   async function mintToken(url) {
-    const web3Modal = new Web3Modal();
-    const connection = await web3Modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
-    const signer = provider.getSigner();
-    let contract = new ethers.Contract(artboardAddress, ArtBoard.abi, signer);
+    try {
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+      let contract = new ethers.Contract(artboardAddress, ArtBoard.abi, signer);
+      let transaction = await contract.createToken(url);
+      let tx = await transaction.wait();
+      let event = tx.events[0];
+      let value = event.args[2];
+      let tokenId = value.toNumber();
+      const price = ethers.utils.parseUnits("1000", "ether");
+      contract = new ethers.Contract(nftmarketaddress, MarketPlace.abi, signer);
+      let listingPrice = await contract.getListingPrice();
+      listingPrice = listingPrice.toString();
+      transaction = await contract.createMarketItem(
+        artboardAddress,
+        tokenId,
+        price,
+        { value: listingPrice }
+      );
+      await transaction.wait();
 
-    let transaction = await contract.createToken(url);
-    let tx = await transaction.wait();
-    let event = tx.events[0];
-    let value = event.args[2];
-    let tokenId = value.toNumber();
+      console.log(transaction);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>

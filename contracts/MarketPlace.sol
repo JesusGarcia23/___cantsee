@@ -12,7 +12,6 @@ contract MarketPlace is ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds;
     Counters.Counter private _itemsSold;
-    using EnumerableMap for EnumerableMap.UintToAddressMap;
 
     address payable owner;
     uint256 listingPrice = 0.025 ether;
@@ -32,7 +31,6 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     mapping(uint256 => MarketItem) private idToMarketItem;
-    EnumerableMap.UintToAddressMap private marketItems;
 
     event MarketItemCreated(
         uint256 indexed itemId,
@@ -74,8 +72,6 @@ contract MarketPlace is ReentrancyGuard {
             false
         );
 
-        marketItems.set(itemId, nftContract);
-
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
         emit MarketItemCreated(
@@ -107,7 +103,6 @@ contract MarketPlace is ReentrancyGuard {
         IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
         idToMarketItem[itemId].owner = payable(msg.sender);
         idToMarketItem[itemId].sold = true;
-        marketItems.set(itemId, nftContract);
         _itemsSold.increment();
         payable(owner).transfer(listingPrice);
     }

@@ -7,6 +7,7 @@ import Home from "./screens/Home";
 import UploadVariants from "./screens/UploadVariants";
 import UploadDetails from "./screens/UploadDetails";
 import ConnectWallet from "./screens/ConnectWallet";
+import Web3Modal from "web3modal";
 import Faq from "./screens/Faq";
 import Activity from "./screens/Activity";
 import Search01 from "./screens/Search01";
@@ -16,10 +17,9 @@ import ProfileEdit from "./screens/ProfileEdit";
 import Item from "./screens/Item";
 import PageList from "./screens/PageList";
 import { artboardAddress, nftmarketaddress } from "../config";
-import ArtBoard from "../artifacts/contracts/ArtBoard.sol/Artboard.json";
+import Artboard from "../artifacts/contracts/Artboard.sol/Artboard.json";
 import MarketPlace from "../artifacts/contracts/MarketPlace.sol/MarketPlace.json";
 import { ethers } from "ethers";
-import { create as ipfsHttpClient } from "ipfs-http-client";
 
 function App() {
   useEffect(() => {
@@ -27,32 +27,42 @@ function App() {
   }, []);
   const [art, setArt] = useState([]);
   async function LoadAssets() {
-    const provider = new ethers.providers.JsonRpcProvider();
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
     const tokenContract = new ethers.Contract(
       artboardAddress,
-      ArtBoard.abi,
+      Artboard.abi,
       provider
     );
     const marketContract = new ethers.Contract(
       nftmarketaddress,
       MarketPlace.abi,
-      provider
+      signer
     );
     const data = await marketContract.fetchItemsCreated();
+    console.log(data);
+
     const items = await Promise.all(
       data.map(async (i) => {
-        const tokenUri = await axios.get(i.tokenId);
+        const tokenUri = await tokenContract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
+        let price = ethers.utils.formatUnits(i.price.toString(), "ether");
         let item = {
-          price: i.price.toString(),
-          tokenId: i.tokenId.toString(),
+          price,
+          tokenId: i.tokenId.toNumber(),
           seller: i.seller,
           owner: i.owner,
-          tokenUri,
+          image: meta.data.image,
+          name: meta.data.name,
+          description: meta.data.description,
         };
         return item;
       })
     );
-    console.log(items, "the items");
+
     setArt(items);
   }
   return (
