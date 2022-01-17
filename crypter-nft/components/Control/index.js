@@ -9,11 +9,12 @@ const Control = ({ className, item }) => {
     <div className={cn(styles.control, className)}>
       <div className={cn("container", styles.container)}>
         <Link
-          className={cn("button-stroke button-small", styles.button)}
           href="/"
         >
-          {/* <Icon name="arrow-prev" size="10" /> */}
-          <span>Back to home</span>
+          <button className={cn("button-stroke button-small", styles.button)}>
+            <Icon name="arrow-prev" size="10" />
+            <span>Back to Home</span>
+          </button>
         </Link>
         <div className={styles.breadcrumbs}>
           {item.map((x, index) => (

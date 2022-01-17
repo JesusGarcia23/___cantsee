@@ -17,7 +17,7 @@ const items = [
       },
       {
         title: "Connect wallet",
-        url: "/connect-wallet",
+        url: "/connectWallet",
       },
     ],
   },
@@ -30,7 +30,7 @@ const items = [
       },
       {
         title: "Create item",
-        url: "/upload-variants",
+        url: "/uploadVariants",
       },
     ],
   },

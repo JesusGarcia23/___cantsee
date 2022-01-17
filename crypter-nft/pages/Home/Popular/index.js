@@ -100,9 +100,9 @@ const directionOptions = ["Sellers", "Buyers"];
 
 const MyIcon = React.forwardRef(({ onClick, href }, ref) => {
   return (
-    <a href={href} onClick={onClick} ref={ref}>
+    <button className={styles.button} href={href} onClick={onClick} ref={ref}>
       <Icon name="arrow-expand" size="24" />
-    </a>
+    </button>
   )
 })
 
@@ -189,8 +189,8 @@ const Popular = () => {
                     </div>
                     <div className={styles.control}>
                       <Add className={styles.button} />
-                      <Link className={styles.button} href={x.url} passHref>
-                        <MyIcon />
+                      <Link href={x.url} passHref>
+                          <MyIcon />
                       </Link>
                     </div>
                   </div>

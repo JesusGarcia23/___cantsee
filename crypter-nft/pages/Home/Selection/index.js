@@ -80,27 +80,29 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index === 0 && (
-                  <Link className={styles.card} href={x.url} key={index}>
-                    {/* <div className={styles.preview}>
-                      <img
-                        srcSet={`${x.image2x} 2x`}
-                        src={x.image}
-                        alt="Selection"
-                      />
-                    </div> */}
-                    <div className={styles.head}>
-                      <div className={styles.line}>
-                        <div className={styles.avatar}>
-                          <img src={x.avatar} alt="Avatar" />
-                        </div>
-                        <div className={styles.description}>
-                          <div className={styles.title}>{x.title}</div>
-                          <div className={styles.counter}>{x.counter}</div>
-                        </div>
+                  <Link href={x.url} key={index}>
+                    <div className={styles.card}>
+                      <div className={styles.preview}>
+                        <img
+                          srcSet={`${x.image2x} 2x`}
+                          src={x.image}
+                          alt="Selection"
+                        />
                       </div>
-                      <div className={styles.box}>
-                        <div className={styles.content}>{x.content}</div>
-                        <div className={styles.price}>{x.price}</div>
+                      <div className={styles.head}>
+                        <div className={styles.line}>
+                          <div className={styles.avatar}>
+                            <img src={x.avatar} alt="Avatar" />
+                          </div>
+                          <div className={styles.description}>
+                            <div className={styles.title}>{x.title}</div>
+                            <div className={styles.counter}>{x.counter}</div>
+                          </div>
+                        </div>
+                        <div className={styles.box}>
+                          <div className={styles.content}>{x.content}</div>
+                          <div className={styles.price}>{x.price}</div>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -111,32 +113,37 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index > 0 && (
-                  <Link className={styles.item} href={x.url} key={index}>
-                    {/* <div className={styles.preview}>
-                      <img
-                        srcSet={`${x.image2x} 2x`}
-                        src={x.image}
-                        alt="Selection"
-                      />
-                    </div> */}
-                    <div className={styles.description}>
-                      <div className={styles.title}>{x.title}</div>
-                      <div className={styles.line}>
-                        <div className={styles.avatar}>
-                          <img src={x.avatar} alt="Avatar" />
-                        </div>
-                        <div className={styles.price}>{x.price}</div>
-                        <div className={styles.content}>{x.content}</div>
+                  <Link href={x.url} key={index}>
+                    <div className={styles.item}>
+                      <div className={styles.preview}>
+                        <img
+                          srcSet={`${x.image2x} 2x`}
+                          src={x.image}
+                          alt="Selection"
+                        />
                       </div>
-                      <button
-                        className={cn(
-                          "button-stroke button-small",
-                          styles.button
-                        )}
-                      >
-                        Place a bid
-                      </button>
+
+                      <div className={styles.description}>
+                        <div className={styles.title}>{x.title}</div>
+                        <div className={styles.line}>
+                          <div className={styles.avatar}>
+                            <img src={x.avatar} alt="Avatar" />
+                          </div>
+                          <div className={styles.price}>{x.price}</div>
+                          <div className={styles.content}>{x.content}</div>
+                        </div>
+                        <button
+                          className={cn(
+                            "button-stroke button-small",
+                            styles.button
+                          )}
+                        >
+                          Place a bid
+                        </button>
+                      </div>
+
                     </div>
+
                   </Link>
                 )
             )}
@@ -167,11 +174,12 @@ const Selection = () => {
             ))}
           </div>
           <Link
-            className={cn("button-stroke button-small", styles.button)}
             href="/search01"
           >
-            <span>Discover more</span>
-            {/* <Icon name="arrow-next" size="10" /> */}
+            <button className={cn("button-stroke button-small", styles.button)}>
+              <span>Discover more</span>
+              <Icon name="arrow-next" size="10" />
+            </button>
           </Link>
         </div>
       </div>

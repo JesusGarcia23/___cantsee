@@ -84,8 +84,10 @@ const Hero = () => {
             <h2 className={cn("h3", styles.title)}>
               The new creative economy.
             </h2>
-            <Link className={cn("button-stroke", styles.button)} href="/search01">
-              Start your search
+            <Link  href="/search01">
+              <button className={cn("button-stroke", styles.button)}>
+                Start your search
+              </button>
             </Link>
           </div>
           <div className={styles.wrapper}>
@@ -144,10 +146,11 @@ const Hero = () => {
                           Place a bid
                         </button>
                         <Link
-                          className={cn("button-stroke", styles.button)}
                           href="/item"
                         >
-                          View item
+                          <button className={cn("button-stroke", styles.button)}>
+                            View item
+                          </button>
                         </Link>
                       </div>
                     </div>

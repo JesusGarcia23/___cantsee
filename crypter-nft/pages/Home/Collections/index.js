@@ -87,31 +87,33 @@ const Collections = () => {
           <h3 className={cn("h3", styles.title)}>Hot collections</h3>
           <div className={styles.inner}>
             <Slider className="collection-slider" {...settings}>
-              {/* {items.map((x, index) => (
-                <Link className={styles.item} href="/profile" key={index}>
-                  <div className={styles.gallery}>
-                    {x.gallery.map((x, index) => (
-                      <div className={styles.preview} key={index}>
-                        <img src={x} alt="Collection" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className={styles.subtitle}>{x.title}</div>
-                  <div className={styles.line}>
-                    <div className={styles.user}>
-                      <div className={styles.avatar}>
-                        <img src={x.avatar} alt="Avatar" />
-                      </div>
-                      <div className={styles.author}>
-                        By <span>{x.author}</span>
-                      </div>
+              {items.map((x, index) => (
+                <Link href="/Profile" key={index}>
+                  <div className={styles.item}>
+                    <div className={styles.gallery}>
+                      {x.gallery.map((x, index) => (
+                        <div className={styles.preview} key={index}>
+                          <img src={x} alt="Collection" />
+                        </div>
+                      ))}
                     </div>
-                    <div className={cn("status-stroke-black", styles.counter)}>
-                      <span>{x.counter}</span> items
+                    <div className={styles.subtitle}>{x.title}</div>
+                    <div className={styles.line}>
+                      <div className={styles.user}>
+                        <div className={styles.avatar}>
+                          <img src={x.avatar} alt="Avatar" />
+                        </div>
+                        <div className={styles.author}>
+                          By <span>{x.author}</span>
+                        </div>
+                      </div>
+                      <div className={cn("status-stroke-black", styles.counter)}>
+                        <span>{x.counter}</span> items
+                      </div>
                     </div>
                   </div>
                 </Link>
-              ))} */}
+              ))}
             </Slider>
           </div>
         </div>
