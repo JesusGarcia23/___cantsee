@@ -32,32 +32,34 @@ const Card = ({ className, item }) => {
           </button>
         </div>
       </div>
-      <Link className={styles.link} href={item.url}>
-        {/* <div className={styles.body}>
-          <div className={styles.line}>
-            <div className={styles.title}>{item.title}</div>
-            <div className={styles.price}>{item.price}</div>
-          </div>
-          <div className={styles.line}>
-            <div className={styles.users}>
-              {item.users.map((x, index) => (
-                <div className={styles.avatar} key={index}>
-                  <img src={x.avatar} alt="Avatar" />
-                </div>
-              ))}
+      <Link href={item.url}>
+        <div className={styles.link}>
+          <div className={styles.body}>
+            <div className={styles.line}>
+              <div className={styles.title}>{item.title}</div>
+              <div className={styles.price}>{item.price}</div>
             </div>
-            <div className={styles.counter}>{item.counter}</div>
+            <div className={styles.line}>
+              <div className={styles.users}>
+                {item.users.map((x, index) => (
+                  <div className={styles.avatar} key={index}>
+                    <img src={x.avatar} alt="Avatar" />
+                  </div>
+                ))}
+              </div>
+              <div className={styles.counter}>{item.counter}</div>
+            </div>
           </div>
-        </div> */}
-        <div className={styles.foot}>
-          <div className={styles.status}>
-            <Icon name="candlesticks-up" size="20" />
-            Highest bid <span>{item.highestBid}</span>
+          <div className={styles.foot}>
+            <div className={styles.status}>
+              <Icon name="candlesticks-up" size="20" />
+              Highest bid <span>{item.highestBid}</span>
+            </div>
+            <div
+              className={styles.bid}
+              dangerouslySetInnerHTML={{ __html: item.bid }}
+            />
           </div>
-          <div
-            className={styles.bid}
-            dangerouslySetInnerHTML={{ __html: item.bid }}
-          />
         </div>
       </Link>
     </div>

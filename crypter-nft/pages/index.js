@@ -4,7 +4,7 @@ import Homepage from './Home'
 export default function Home() {
   
   return (
-    <div>
+    <div style={{ overflowX: 'hidden'}}>
         <Homepage/>
     </div>
   )

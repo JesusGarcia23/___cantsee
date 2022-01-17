@@ -203,7 +203,7 @@ const Profile = () => {
               <Icon name="edit" size="16" />
             </button>
             <Link
-              href="ProfileEdit"
+              href="/profileEdit"
             >
               <button className={cn("button-stroke button-small", styles.button)}>
                 <span>Edit profile</span>
