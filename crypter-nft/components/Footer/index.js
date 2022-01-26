@@ -48,13 +48,15 @@ const Footers = () => {
       <div className={cn("container", styles.container)}>
         <div className={styles.row}>
           <div className={styles.col}>
-            <Link className={styles.logo} href="/">
-              <Image
-                className={styles.pic}
-                src="/images/logo-dark.png"
-                srcDark="/images/logo-light.png"
-                alt="Fitness Pro"
-              />
+            <Link href="/">
+              <div className={styles.logo}>
+                <Image
+                  className={styles.pic}
+                  src="/images/logo-dark.png"
+                  srcDark="/images/logo-light.png"
+                  alt="Fitness Pro"
+                />
+              </div>
             </Link>
             <div className={styles.info}>The New Creative Economy.</div>
             <div className={styles.version}>

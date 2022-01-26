@@ -37,24 +37,26 @@ const Headers = () => {
   return (
     <header className={styles.header}>
       <div className={cn("container", styles.container)}>
-        <Link className={styles.logo} href="/">
-          <Image
-            className={styles.pic}
-            src="/images/logo-dark.png"
-            srcDark="/images/logo-light.png"
-            alt="Fitness Pro"
-          />
+        <Link href="/">
+          <div className={styles.logo}>
+            <Image
+              className={styles.pic}
+              src="/images/logo-dark.png"
+              srcDark="/images/logo-light.png"
+              alt="Fitness Pro"
+            />
+          </div>
         </Link>
         <div className={cn(styles.wrapper, { [styles.active]: visibleNav })}>
           <nav className={styles.nav}>
             {nav.map((x, index) => (
               <Link
-                className={styles.link}
-                // activeClassName={styles.active}
                 href={x.url}
                 key={index}
               >
-                {x.title}
+                <button className={styles.link} activeClassName={styles.active}>
+                  {x.title}
+                </button>
               </Link>
             ))}
           </nav>
@@ -77,18 +79,18 @@ const Headers = () => {
             </button>
           </form>
           <Link
-            className={cn("button-small", styles.button)}
             href="/upload-variants"
           >
-            Upload
+            <button className={cn("button-small", styles.button)}>Upload</button>
           </Link>
         </div>
         <Notification className={styles.notification} />
         <Link
-          className={cn("button-small", styles.button)}
           href="/upload-variants"
         >
-          Upload
+          <button className={cn("button-small", styles.button)}>
+            Upload
+          </button>
         </Link>
         {/* <Link
           className={cn("button-stroke button-small", styles.button)}

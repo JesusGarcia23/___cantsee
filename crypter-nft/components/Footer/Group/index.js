@@ -26,8 +26,10 @@ const Group = ({ className, item }) => {
               {x.title}
             </a>
           ) : (
-            <Link className={styles.link} href={x.url} key={index}>
-              {x.title}
+            <Link href={x.url} key={index}>
+              <p className={styles.link}>
+                {x.title}
+              </p>
             </Link>
           )
         )}

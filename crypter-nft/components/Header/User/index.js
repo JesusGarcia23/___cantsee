@@ -87,15 +87,16 @@ const User = ({ className }) => {
                     </a>
                   ) : (
                     <Link
-                      className={styles.item}
                       href={x.url}
                       onClick={() => setVisible(!visible)}
                       key={index}
                     >
-                      {/* <div className={styles.icon}>
-                        <Icon name={x.icon} size="20" />
-                      </div> */}
-                      <div className={styles.text}>{x.title}</div>
+                      <div className={styles.item}>
+                        <div className={styles.icon}>
+                          <Icon name={x.icon} size="20" />
+                        </div>
+                        <div className={styles.text}>{x.title}</div>
+                      </div>
                     </Link>
                   )
                 ) : (

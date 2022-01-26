@@ -58,32 +58,34 @@ const Notification = ({ className }) => {
             <div className={styles.list}>
               {items.map((x, index) => (
                 <Link
-                  className={styles.item}
                   href={x.url}
                   onClick={() => setVisible(!visible)}
                   key={index}
                 >
-                  {/* <div className={styles.preview}>
-                    <img src={x.image} alt="Notification" />
-                  </div> */}
-                  {/* <div className={styles.details}>
-                    <div className={styles.subtitle}>{x.title}</div>
-                    <div className={styles.price}>{x.price}</div>
-                    <div className={styles.date}>{x.date}</div>
-                  </div> */}
-                  <div
-                    className={styles.status}
-                    style={{ backgroundColor: x.color }}
-                  ></div>
+                  <div className={styles.item}>
+                    <div className={styles.preview}>
+                      <img src={x.image} alt="Notification" />
+                    </div>
+                    <div className={styles.details}>
+                      <div className={styles.subtitle}>{x.title}</div>
+                      <div className={styles.price}>{x.price}</div>
+                      <div className={styles.date}>{x.date}</div>
+                    </div>
+                    <div
+                      className={styles.status}
+                      style={{ backgroundColor: x.color }}
+                    ></div>
+                  </div>
                 </Link>
               ))}
             </div>
             <Link
-              className={cn("button-small", styles.button)}
               href="/activity"
               onClick={() => setVisible(!visible)}
             >
-              See all
+              <p className={cn("button-small", styles.button)}>
+                See all
+              </p>
             </Link>
           </div>
         )}
