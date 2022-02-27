@@ -55,6 +55,29 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const [providerInitialized, setProviderInitialized] = useState(false);
     const [web3Modal, setWeb3Modal] = useState<Web3Modal | null>(null);
 
+    const _initListeners = useCallback(
+        rawProvider => {
+        if (!rawProvider.on) {
+            return;
+        }
+        rawProvider.on("accountsChanged", async (accounts: string[]) => {
+            setTimeout(() => window.location.reload(), 1);
+        });
+
+        rawProvider.on("chainChanged", async (_chainId: string) => {
+            const newChainId = idFromHexString(_chainId);
+            const networkHash = provider && await initNetworkFunc({ provider });
+            if (networkHash && (newChainId !== networkHash.networkId)) {
+                // then provider is out of sync, reload per metamask recommendation
+                setTimeout(() => window.location.reload(), 1);
+            } else {
+                setNetworkId(networkHash ? networkHash.networkId : 1);
+            }
+        });
+        },
+        [provider],
+    );
+
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -89,6 +112,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             return;
         }
         rawProvider = await web3Modal.connect();
+
+        _initListeners(rawProvider);
+
         const connectedProvider = new Web3Provider(rawProvider, "any");
         setProvider(connectedProvider);
         const connectedAddress = await connectedProvider.getSigner().getAddress();
